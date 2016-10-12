@@ -33,6 +33,14 @@ module.exports = function(list, options) {
 	// By default, add <style> tags to the bottom of <head>.
 	if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
 
+  if (typeof options.iframe !== "undefined" && document.getElementById(options.iframe)) {
+    getHeadElement = memoize(function () {
+      var iframe = document.getElementById(options.iframe);
+      var doc = iframe.contentDocument || iframe.contentWindow.document;
+      return doc.head || doc.getElementsByTagName("head")[0];
+    }),
+  }
+
 	var styles = listToStyles(list);
 	addStylesToDom(styles, options);
 
